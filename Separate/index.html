@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive La Liga 2024 Season Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.globe.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+      console.log('Analytics tracking code initialized (placeholder).');
+    </script>
+    </head>
+<body class="p-4">
+    <div id="vanta-bg"></div>
+
+    <div class="container mx-auto bg-white/80 backdrop-blur-lxx p-8 rounded-xl shadow-xl mt-8">
+        <header class="text-center mb-8">
+            <center><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/LaLiga_logo_%282023%29.svg/1200px-LaLiga_logo_%282023%29.svg.png?20230605093317" width="30%" height="80%"></img></center>
+            <br>
+            <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Quantitative Breakdown of La Liga upto Season 2024</h1>
+            <p class="text-lg text-black-600-b">In-Depth Analysis of La Liga Season 2014 to 2024: Performance Trends and Strategic Insights</p>
+        </header>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">Analysis Hypothesis</h2>
+            <p class="text-gray-1200-b leading-relaxed">
+                "Given the current state of the table and past seasons' data, what's the realistic probability that each team could still win La Liga?"
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                <li>Who is most likely to win La Liga this year based on previous 10 years?</li>
+                <li>Who are the 2 teams that will most likely be relegated?</li>
+                <li>Which team will most likely go to the Conference League (7th position)?</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">Data Exploration</h2>
+            <p class="text-gray-1200 leading-relaxed mb-4">
+                The dataset head, which displays the first 20 rows of the dataset, provides an initial glimpse into the data.,It serves as a quick overview of the information contained in the dataset.,The first few rows offer an insight into the structure and format of the data.,This section is crucial for understanding the variables and their initial values.,Examining the dataset head aids in identifying any potential issues or anomalies at the beginning of the data.
+            </p>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">These are the first 20 rows of the dataset used for the analysis</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white text-center">
+    <thead>
+        <tr>
+            <th class="text-center">Rank</th>
+            <th class="text-center">Team</th>
+            <th class="text-center">Match Played</th>
+            <th class="text-center">Won</th>
+            <th class="text-center">Draw</th>
+            <th class="text-center">Lost</th>
+            <th class="text-center">Goals For</th>
+            <th class="text-center">Goals Against</th>
+            <th class="text-center">Points</th>
+            <th class="text-center">points/per_match</th>
+            <th class="text-center">Team Top Scorer</th>
+            <th class="text-center">Goalkeeper</th>
+            <th class="text-center">Season</th>
+            <th class="text-center">xG (Expected Goals)</th>
+            <th class="text-center">xGA (Expected Goal Against)</th>
+            <th class="text-center">xGD (Expected Goal Diffence)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td class="text-center">1</td><td class="text-center">Barcelona</td><td class="text-center">38</td><td class="text-center">30</td><td class="text-center">4</td><td class="text-center">4</td><td class="text-center">110</td><td class="text-center">21</td><td class="text-center">94</td><td class="text-center">2.47</td><td class="text-center">Lionel Messi - 43</td><td class="text-center">Claudio Bravo</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">2</td><td class="text-center">Real Madrid</td><td class="text-center">38</td><td class="text-center">30</td><td class="text-center">2</td><td class="text-center">6</td><td class="text-center">118</td><td class="text-center">38</td><td class="text-center">92</td><td class="text-center">2.42</td><td class="text-center">Cristiano Ronaldo - 48</td><td class="text-center">Iker Casillas</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">3</td><td class="text-center">Atlético Madrid</td><td class="text-center">38</td><td class="text-center">23</td><td class="text-center">9</td><td class="text-center">6</td><td class="text-center">67</td><td class="text-center">29</td><td class="text-center">78</td><td class="text-center">2.05</td><td class="text-center">Antoine Griezmann - 22</td><td class="text-center">Miguel Ángel Moyá</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">4</td><td class="text-center">Valencia</td><td class="text-center">38</td><td class="text-center">22</td><td class="text-center">11</td><td class="text-center">5</td><td class="text-center">70</td><td class="text-center">32</td><td class="text-center">77</td><td class="text-center">2.03</td><td class="text-center">Daniel Parejo - 12</td><td class="text-center">Diego Alves</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">5</td><td class="text-center">Sevilla</td><td class="text-center">38</td><td class="text-center">23</td><td class="text-center">7</td><td class="text-center">8</td><td class="text-center">71</td><td class="text-center">45</td><td class="text-center">76</td><td class="text-center">2.00</td><td class="text-center">Carlos Bacca - 20</td><td class="text-center">Sergio Rico</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">6</td><td class="text-center">Villarreal</td><td class="text-center">38</td><td class="text-center">16</td><td class="text-center">12</td><td class="text-center">10</td><td class="text-center">48</td><td class="text-center">37</td><td class="text-center">60</td><td class="text-center">1.58</td><td class="text-center">Luciano Vietto - 12</td><td class="text-center">Sergio Asenjo</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">7</td><td class="text-center">Athletic Club</td><td class="text-center">38</td><td class="text-center">15</td><td class="text-center">10</td><td class="text-center">13</td><td class="text-center">42</td><td class="text-center">41</td><td class="text-center">55</td><td class="text-center">1.45</td><td class="text-center">Aritz Aduriz - 18</td><td class="text-center">Gorka Iraizoz</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">8</td><td class="text-center">Celta Vigo</td><td class="text-center">38</td><td class="text-center">13</td><td class="text-center">12</td><td class="text-center">13</td><td class="text-center">47</td><td class="text-center">44</td><td class="text-center">51</td><td class="text-center">1.34</td><td class="text-center">Nolito - 13</td><td class="text-center">Sergio Álvarez</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">9</td><td class="text-center">Málaga</td><td class="text-center">38</td><td class="text-center">14</td><td class="text-center">8</td><td class="text-center">16</td><td class="text-center">42</td><td class="text-center">48</td><td class="text-center">50</td><td class="text-center">1.32</td><td class="text-center">Juanmi - 8</td><td class="text-center">Carlos Kameni</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">10</td><td class="text-center">Espanyol</td><td class="text-center">38</td><td class="text-center">13</td><td class="text-center">10</td><td class="text-center">15</td><td class="text-center">47</td><td class="text-center">51</td><td class="text-center">49</td><td class="text-center">1.29</td><td class="text-center">Sergio García - 14</td><td class="text-center">Kiko Casilla</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">11</td><td class="text-center">Rayo Vallecano</td><td class="text-center">38</td><td class="text-center">15</td><td class="text-center">4</td><td class="text-center">19</td><td class="text-center">46</td><td class="text-center">68</td><td class="text-center">49</td><td class="text-center">1.29</td><td class="text-center">Alberto Bueno - 17</td><td class="text-center">Toño</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">12</td><td class="text-center">Real Sociedad</td><td class="text-center">38</td><td class="text-center">11</td><td class="text-center">13</td><td class="text-center">14</td><td class="text-center">44</td><td class="text-center">51</td><td class="text-center">46</td><td class="text-center">1.21</td><td class="text-center">Carlos Vela - 9</td><td class="text-center">Gerónimo Rulli</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">13</td><td class="text-center">Elche</td><td class="text-center">38</td><td class="text-center">11</td><td class="text-center">8</td><td class="text-center">19</td><td class="text-center">35</td><td class="text-center">62</td><td class="text-center">41</td><td class="text-center">1.08</td><td class="text-center">Jonathas - 14</td><td class="text-center">Przemysław Tytoń</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">14</td><td class="text-center">Levante</td><td class="text-center">38</td><td class="text-center">9</td><td class="text-center">10</td><td class="text-center">19</td><td class="text-center">34</td><td class="text-center">67</td><td class="text-center">37</td><td class="text-center">0.97</td><td class="text-center">David Barral - 11</td><td class="text-center">Diego Mariño</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">15</td><td class="text-center">Getafe</td><td class="text-center">38</td><td class="text-center">10</td><td class="text-center">7</td><td class="text-center">21</td><td class="text-center">33</td><td class="text-center">64</td><td class="text-center">37</td><td class="text-center">0.97</td><td class="text-center">Álvaro Vázquez - 7</td><td class="text-center">Vicente Guaita</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">16</td><td class="text-center">La Coruña</td><td class="text-center">38</td><td class="text-center">7</td><td class="text-center">14</td><td class="text-center">17</td><td class="text-center">35</td><td class="text-center">60</td><td class="text-center">35</td><td class="text-center">0.92</td><td class="text-center">Lucas Pérez - 6</td><td class="text-center">Fabricio</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">17</td><td class="text-center">Granada</td><td class="text-center">38</td><td class="text-center">7</td><td class="text-center">14</td><td class="text-center">17</td><td class="text-center">29</td><td class="text-center">64</td><td class="text-center">35</td><td class="text-center">0.92</td><td class="text-center">Youssef El-Arabi - 8</td><td class="text-center">Roberto</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">18</td><td class="text-center">Eibar</td><td class="text-center">38</td><td class="text-center">9</td><td class="text-center">8</td><td class="text-center">21</td><td class="text-center">34</td><td class="text-center">55</td><td class="text-center">35</td><td class="text-center">0.92</td><td class="text-center">Mikel Arruabarrena - 9</td><td class="text-center">Xabi Irureta</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">19</td><td class="text-center">Almería</td><td class="text-center">38</td><td class="text-center">8</td><td class="text-center">8</td><td class="text-center">22</td><td class="text-center">35</td><td class="text-center">64</td><td class="text-center">29</td><td class="text-center">0.76</td><td class="text-center">Tomer Hemed - 8</td><td class="text-center">Rubén</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+        <tr><td class="text-center">20</td><td class="text-center">Córdoba</td><td class="text-center">38</td><td class="text-center">3</td><td class="text-center">11</td><td class="text-center">24</td><td class="text-center">22</td><td class="text-center">68</td><td class="text-center">20</td><td class="text-center">0.53</td><td class="text-center">Nabil Ghilas - 7</td><td class="text-center">Juan Carlos</td><td class="text-center">2014</td><td class="text-center">NaN</td><td class="text-center">NaN</td><td class="text-center">NaN</td></tr>
+    </tbody>
+</table>
+
+            </div>
+
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Team's Tournament Appearances</h3>
+            <p class="text-gray-700">
+                This represents the total number of seasons in which each team has participated, providing insight into the frequency and consistency of their appearances within the dataset over time.
+            </p>
+            <table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Squad</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Barcelona</td><td>11</td></tr>
+    <tr><td>Villarreal</td><td>11</td></tr>
+    <tr><td>Real Madrid</td><td>11</td></tr>
+    <tr><td>Celta Vigo</td><td>11</td></tr>
+    <tr><td>Athletic Club</td><td>11</td></tr>
+    <tr><td>Real Sociedad</td><td>11</td></tr>
+    <tr><td>Sevilla</td><td>11</td></tr>
+    <tr><td>Valencia</td><td>11</td></tr>
+    <tr><td>Atlético Madrid</td><td>11</td></tr>
+    <tr><td>Betis</td><td>10</td></tr>
+    <tr><td>Getafe</td><td>10</td></tr>
+    <tr><td>Espanyol</td><td>9</td></tr>
+    <tr><td>Alavés</td><td>8</td></tr>
+    <tr><td>Levante</td><td>7</td></tr>
+    <tr><td>Rayo Vallecano</td><td>7</td></tr>
+    <tr><td>Granada</td><td>7</td></tr>
+    <tr><td>Eibar</td><td>7</td></tr>
+    <tr><td>Osasuna</td><td>7</td></tr>
+    <tr><td>Valladolid</td><td>5</td></tr>
+    <tr><td>Girona</td><td>5</td></tr>
+    <tr><td>Mallorca</td><td>5</td></tr>
+    <tr><td>Las Palmas</td><td>5</td></tr>
+    <tr><td>Leganés</td><td>5</td></tr>
+    <tr><td>La Coruña</td><td>4</td></tr>
+    <tr><td>Elche</td><td>4</td></tr>
+    <tr><td>Málaga</td><td>4</td></tr>
+    <tr><td>Cádiz</td><td>4</td></tr>
+    <tr><td>Almería</td><td>3</td></tr>
+    <tr><td>Sporting Gijón</td><td>2</td></tr>
+    <tr><td>Huesca</td><td>2</td></tr>
+    <tr><td>Córdoba</td><td>1</td></tr>
+  </tbody>
+</table>
+
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Descriptive Stats of the La Liga Dataset</h3>
+            <p class="text-gray-700">
+                Descriptive statistics of the La Liga dataset provide a comprehensive statistical summary of the numerical columns within the dataset.These statistics offer valuable insights into the overall distribution, central tendency, and variability of the data, helping to better understand the characteristics and patterns present within the dataset.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+  <thead>
+    <tr>
+      <th>Statistic</th>
+      <th>Rank</th>
+      <th>Match Played</th>
+      <th>Won</th>
+      <th>Draw</th>
+      <th>Lost</th>
+      <th>Goals For</th>
+      <th>Goals Against</th>
+      <th>Points</th>
+      <th>points/per_match</th>
+      <th>Season</th>
+      <th>xG (Expected Goals)</th>
+      <th>xGA (Expected Goal Against)</th>
+      <th>xGD (Expected Goal Difference)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>count</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>160.0</td><td>160.0</td><td>160.0</td></tr>
+    <tr><td>mean</td><td>10.5</td><td>38.0</td><td>14.06</td><td>9.87</td><td>14.06</td><td>49.9</td><td>49.9</td><td>52.05</td><td>1.37</td><td>2019.0</td><td>48.84</td><td>48.84</td><td>0.0</td></tr>
+    <tr><td>std</td><td>5.78</td><td>0.0</td><td>6.21</td><td>2.91</td><td>5.48</td><td>17.75</td><td>13.14</td><td>17.47</td><td>0.46</td><td>3.17</td><td>11.62</td><td>8.62</td><td>17.13</td></tr>
+    <tr><td>min</td><td>1.0</td><td>38.0</td><td>3.0</td><td>2.0</td><td>1.0</td><td>22.0</td><td>18.0</td><td>16.0</td><td>0.42</td><td>2014.0</td><td>29.3</td><td>32.5</td><td>-33.0</td></tr>
+    <tr><td>25%</td><td>5.75</td><td>38.0</td><td>10.0</td><td>8.0</td><td>10.0</td><td>38.0</td><td>41.0</td><td>41.0</td><td>1.08</td><td>2016.0</td><td>40.58</td><td>42.88</td><td>-11.0</td></tr>
+    <tr><td>50%</td><td>10.5</td><td>38.0</td><td>13.0</td><td>10.0</td><td>15.0</td><td>46.0</td><td>50.0</td><td>48.5</td><td>1.28</td><td>2019.0</td><td>45.85</td><td>48.3</td><td>-3.15</td></tr>
+    <tr><td>75%</td><td>15.25</td><td>38.0</td><td>17.25</td><td>12.0</td><td>18.0</td><td>57.0</td><td>58.0</td><td>61.0</td><td>1.61</td><td>2022.0</td><td>53.98</td><td>54.42</td><td>11.0</td></tr>
+    <tr><td>max</td><td>20.0</td><td>38.0</td><td>30.0</td><td>18.0</td><td>30.0</td><td>118.0</td><td>94.0</td><td>95.0</td><td>2.5</td><td>2024.0</td><td>91.5</td><td>76.2</td><td>49.5</td></tr>
+  </tbody>
+</table>
+
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">Key Findings (Season 2014-2024)</h2>
+            <div class="space-y-4">
+                <div class="key-finding champion">Based on our analysis, <strong class="font-bold">Barcelona has an 86.164% chance</strong> of being the champion of Spain.</div>
+                <div class="key-finding runner-up"><strong class="font-bold">Real Madrid follows with a 13.836% chance</strong>.</div>
+                <div class="key-finding conference">The 7th position for the Conference League is most likely to be <strong class="font-bold">Celta Vigo</strong>.</div>
+                <div class="key-finding relegation">The teams most likely to be relegated are <strong class="font-bold">'Las Palmas' and 'Valladolid'</strong>.</div>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">2025 La Liga Win Probabilities</h2>
+            <div id="win-probability-chart" class="chart-container"></div>
+            <p class="text-gray-600 text-sm mt-4 text-center">
+                This bar chart visualizes the projected championship win probabilities for La Liga teams in the 2025 season, based on the provided analysis.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">Top Finishes by Team in Last 10 Years</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                This chart shows how many times each team finished in the top 3 ranks over the last 10 years.
+            </p>
+            <div id="top-finishes-chart" class="chart-container"></div>
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Frequency of Top 3 Finishes by Team</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Barcelona</td><td>6</td></tr>
+                        <tr><td>1</td><td>Real Madrid</td><td>4</td></tr>
+                        <tr><td>1</td><td>Atlético Madrid</td><td>1</td></tr>
+                        <tr><td>2</td><td>Real Madrid</td><td>5</td></tr>
+                        <tr><td>2</td><td>Barcelona</td><td>4</td></tr>
+                        <tr><td>2</td><td>Atlético Madrid</td><td>2</td></tr>
+                        <tr><td>3</td><td>Atlético Madrid</td><td>7</td></tr>
+                        <tr><td>3</td><td>Real Madrid</td><td>2</td></tr>
+                        <tr><td>3</td><td>Barcelona</td><td>1</td></tr>
+                        <tr><td>3</td><td>Girona</td><td>1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-500 mb-4">Historical Winning Teams Analysis</h2>
+            <p class="text-gray-700 leading-relaxed">
+                This section presents a comprehensive analysis of the teams that secured 1st place in each La Liga season from 2014 to 2024. It highlights not only the title-winning teams for each year but also provides key performance metrics including their total points earned, average points per match, and overall goal difference. This analysis offers valuable insights into the performance standards required to win the league.
+            </p>
+            <table class="min-w-full bg-white">
+  <thead>
+    <tr>
+      <th>Season</th>
+      <th>Team</th>
+      <th>Points</th>
+      <th>pts/per_match</th>
+      <th>Goal Difference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2014</td><td>Barcelona</td><td>94</td><td>2.47</td><td>89</td></tr>
+    <tr><td>2015</td><td>Barcelona</td><td>91</td><td>2.39</td><td>83</td></tr>
+    <tr><td>2016</td><td>Real Madrid</td><td>93</td><td>2.45</td><td>65</td></tr>
+    <tr><td>2017</td><td>Barcelona</td><td>93</td><td>2.45</td><td>70</td></tr>
+    <tr><td>2018</td><td>Barcelona</td><td>87</td><td>2.29</td><td>54</td></tr>
+    <tr><td>2019</td><td>Real Madrid</td><td>87</td><td>2.29</td><td>45</td></tr>
+    <tr><td>2020</td><td>Atlético Madrid</td><td>86</td><td>2.26</td><td>42</td></tr>
+    <tr><td>2021</td><td>Real Madrid</td><td>86</td><td>2.26</td><td>49</td></tr>
+    <tr><td>2022</td><td>Barcelona</td><td>88</td><td>2.32</td><td>50</td></tr>
+    <tr><td>2023</td><td>Real Madrid</td><td>95</td><td>2.50</td><td>61</td></tr>
+    <tr><td>2024</td><td>Barcelona</td><td>88</td><td>2.32</td><td>63</td></tr>
+  </tbody>
+</table>
+
+            <p class="text-gray-700 mt-4">
+                The average points per match for past 10 winning teams is: <strong class="text-blue-700">2.368</strong> and the average points required is: <strong class="text-blue-700">89.82</strong>.
+            </p>
+        </section>
+
+        <footer class="text-center text-gray-500 text-sm mt-12 pt-8 border-t border-gray-200">
+            &copy; 2024 La Liga Analysis. All rights reserved.
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

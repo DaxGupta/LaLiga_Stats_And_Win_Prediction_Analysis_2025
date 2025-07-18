@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive La Liga 2024 Season Analysis</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Plotly.js CDN for interactive charts -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <!-- Vanta.js and Three.js for animated background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.globe.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* The background color is now handled by Vanta.js */
+        }
+        #vanta-bg {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .container {
+            max-width: 1024px; /* Slightly wider for more content */
+        }
+        /* Custom styles for Plotly chart containers */
+        .chart-container {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+            margin: 20px auto;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+            background-color: white;
+            padding: 1rem; /* Add some padding inside the chart container */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.5rem;
+            overflow: hidden; /* Ensures rounded corners apply to content */
+        }
+        th, td {
+            border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        th {
+            background-color: #edf2f7; /* Tailwind gray-100 */
+            font-weight: 600;
+            color: #2d3748; /* Tailwind gray-800 */
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #f7fafc; /* Tailwind gray-50 */
+        }
+        tbody tr:hover {
+            background-color: #ebf4ff; /* Tailwind blue-50 */
+        }
+        pre {
+            background-color: #2d3748; /* Dark background for code snippets */
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto; /* Enable horizontal scrolling for wide code */
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+    </style>
+
+    <!-- Placeholder for Analytics Tracking Code -->
+    <!-- Replace 'G-XXXXXXXXXX' with your actual Google Analytics Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+      console.log('Analytics tracking code initialized (placeholder).');
+    </script>
+    <!-- End Analytics Tracking Code Placeholder -->
+</head>
+<body class="p-4">
+    <!-- This div will hold the Vanta.js animation -->
+    <div id="vanta-bg"></div>
+
+    <!-- Main content container with a semi-transparent background -->
+    <div class="container mx-auto bg-white/50 backdrop-blur-m p-8 rounded-xl shadow-xl mt-8">
+        <header class="text-center mb-8">
+            <center><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/LaLiga_logo_%282023%29.svg/1200px-LaLiga_logo_%282023%29.svg.png?20230605093317" width="30%" height="80%"></img></center>
+            <br>
+            <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Quantitative Breakdown of La Liga upto Season 2024</h1>
+            <p class="text-lg text-gray-600">In-Depth Analysis of La Liga 2024: Performance Trends and Strategic Insights</p>
+        </header>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Analysis Hypothesis</h2>
+            <p class="text-gray-700 leading-relaxed">
+                "Given the current state of the table and past seasons' data, what's the realistic probability that each team could still win La Liga?"
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                <li>Who is most likely to win La Liga this year based on previous 10 years?</li>
+                <li>Who are the 2 teams that will most likely be relegated?</li>
+                <li>Which team will most likely go to the Conference League (7th position)?</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Data Exploration</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Initial data loading and inspection revealed a dataset with 220 entries and 20 columns, covering La Liga data from 2014 to 2025.
+            </p>
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">Dataset Head (First 20 Rows)</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>rk</th>
+                            <th>squad</th>
+                            <th>mp</th>
+                            <th>w</th>
+                            <th>d</th>
+                            <th>l</th>
+                            <th>gf</th>
+                            <th>ga</th>
+                            <th>gd</th>
+                            <th>pts</th>
+                            <th>pts/mp</th>
+                            <th>attendance</th>
+                            <th>top_team_scorer</th>
+                            <th>goalkeeper</th>
+                            <th>notes</th>
+                            <th>season</th>
+                            <th>xg</th>
+                            <th>xga</th>
+                            <th>xgd</th>
+                            <th>xgd/90</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Barcelona</td><td>38</td><td>30</td><td>4</td><td>4</td><td>110</td><td>21</td><td>89</td><td>94</td><td>2.47</td><td>77632.0</td><td>Lionel Messi - 43</td><td>Claudio Bravo</td><td>→ Champions League via Champions League win</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>2</td><td>Real Madrid</td><td>38</td><td>30</td><td>2</td><td>6</td><td>118</td><td>38</td><td>80</td><td>92</td><td>2.42</td><td>73545.0</td><td>Cristiano Ronaldo - 48</td><td>Iker Casillas</td><td>→ Champions League via league finish</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>3</td><td>Atlético Madrid</td><td>38</td><td>23</td><td>9</td><td>6</td><td>67</td><td>29</td><td>38</td><td>78</td><td>2.05</td><td>46454.0</td><td>Antoine Griezmann - 22</td><td>Miguel Ángel Moyá</td><td>→ Champions League via league finish</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>4</td><td>Valencia</td><td>38</td><td>22</td><td>11</td><td>5</td><td>70</td><td>32</td><td>38</td><td>77</td><td>2.03</td><td>43125.0</td><td>Daniel Parejo - 12</td><td>Diego Alves</td><td>→ Champions League via league finish</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>5</td><td>Sevilla</td><td>38</td><td>23</td><td>7</td><td>8</td><td>71</td><td>45</td><td>26</td><td>76</td><td>2.00</td><td>30878.0</td><td>Carlos Bacca - 20</td><td>Sergio Rico</td><td>→ Champions League via Europa League win</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>6</td><td>Villarreal</td><td>38</td><td>16</td><td>12</td><td>10</td><td>48</td><td>37</td><td>11</td><td>60</td><td>1.58</td><td>16375.0</td><td>Luciano Vietto - 12</td><td>Sergio Asenjo</td><td>→ Europa League via league finish 1</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>7</td><td>Athletic Club</td><td>38</td><td>15</td><td>10</td><td>13</td><td>42</td><td>41</td><td>1</td><td>55</td><td>1.45</td><td>40654.0</td><td>Aritz Aduriz - 18</td><td>Gorka Iraizoz</td><td>→ Europa League via league finish</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>8</td><td>Celta Vigo</td><td>38</td><td>13</td><td>12</td><td>13</td><td>47</td><td>44</td><td>3</td><td>51</td><td>1.34</td><td>19039.0</td><td>Nolito - 13</td><td>Sergio Álvarez</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>9</td><td>Málaga</td><td>38</td><td>14</td><td>8</td><td>16</td><td>42</td><td>48</td><td>-6</td><td>50</td><td>1.32</td><td>22333.0</td><td>Juanmi - 8</td><td>Carlos Kameni</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>10</td><td>Espanyol</td><td>38</td><td>13</td><td>10</td><td>15</td><td>47</td><td>51</td><td>-4</td><td>49</td><td>1.29</td><td>18694.0</td><td>Sergio García - 14</td><td>Kiko Casilla</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>11</td><td>Rayo Vallecano</td><td>38</td><td>15</td><td>4</td><td>19</td><td>46</td><td>68</td><td>-22</td><td>49</td><td>1.29</td><td>10414.0</td><td>Alberto Bueno - 17</td><td>Toño</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>12</td><td>Real Sociedad</td><td>38</td><td>11</td><td>13</td><td>14</td><td>44</td><td>51</td><td>-7</td><td>46</td><td>1.21</td><td>21550.0</td><td>Carlos Vela - 9</td><td>Gerónimo Rulli</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>13</td><td>Elche</td><td>38</td><td>11</td><td>8</td><td>19</td><td>35</td><td>62</td><td>-27</td><td>41</td><td>1.08</td><td>21668.0</td><td>Jonathas - 14</td><td>Przemysław Tytoń</td><td>Relegated 2</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>14</td><td>Levante</td><td>38</td><td>9</td><td>10</td><td>19</td><td>34</td><td>67</td><td>-33</td><td>37</td><td>0.97</td><td>15866.0</td><td>David Barral - 11</td><td>Diego Mariño</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>15</td><td>Getafe</td><td>38</td><td>10</td><td>7</td><td>21</td><td>33</td><td>64</td><td>-31</td><td>37</td><td>0.97</td><td>7171.0</td><td>Álvaro Vázquez - 7</td><td>Vicente Guaita</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>16</td><td>La Coruña</td><td>38</td><td>7</td><td>14</td><td>17</td><td>35</td><td>60</td><td>-25</td><td>35</td><td>0.92</td><td>21042.0</td><td>Lucas Pérez - 6</td><td>Fabricio</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>17</td><td>Granada</td><td>38</td><td>7</td><td>14</td><td>17</td><td>29</td><td>64</td><td>-35</td><td>35</td><td>0.92</td><td>17736.0</td><td>Youssef El-Arabi - 8</td><td>Roberto</td><td>NaN</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>18</td><td>Eibar</td><td>38</td><td>9</td><td>8</td><td>21</td><td>34</td><td>55</td><td>-21</td><td>35</td><td>0.92</td><td>4773.0</td><td>Mikel Arruabarrena - 9</td><td>Xabi Irureta</td><td>Retained 3</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>19</td><td>Almería</td><td>38</td><td>8</td><td>8</td><td>22</td><td>35</td><td>64</td><td>-29</td><td>29</td><td>0.76</td><td>10538.0</td><td>Tomer Hemed - 8</td><td>Rubén</td><td>3-point deduction 4, Relegated</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                        <tr><td>20</td><td>Córdoba</td><td>38</td><td>3</td><td>11</td><td>24</td><td>22</td><td>68</td><td>-46</td><td>20</td><td>0.53</td><td>16348.0</td><td>Nabil Ghilas - 7</td><td>Juan Carlos</td><td>Relegated</td><td>2014</td><td>NaN</td><td>NaN</td><td>NaN</td><td>NaN</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Squad Value Counts</h3>
+            <p class="text-gray-700">
+                This shows the number of seasons each squad appears in the dataset.
+            </p>
+            <pre class="mt-2"><code>squad
+Barcelona          11
+Villarreal         11
+Real Madrid        11
+Celta Vigo         11
+Athletic Club      11
+Real Sociedad      11
+Sevilla            11
+Valencia           11
+Atlético Madrid    11
+Betis              10
+Getafe             10
+Espanyol            9
+Alavés              8
+Levante             7
+Rayo Vallecano      7
+Granada             7
+Eibar               7
+Osasuna             7
+Valladolid          5
+Girona              5
+Mallorca            5
+Las Palmas          5
+Leganés             5
+La Coruña           4
+Elche               4
+Málaga              4
+Cádiz               4
+Almería             3
+Sporting Gijón      2
+Huesca              2
+Córdoba             1
+Name: count, dtype: int64</code></pre>
+
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Descriptive Statistics of the Dataset</h3>
+            <p class="text-gray-700">
+                A statistical summary of the numerical columns in the dataset.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>Statistic</th>
+                            <th>rk</th>
+                            <th>mp</th>
+                            <th>w</th>
+                            <th>d</th>
+                            <th>l</th>
+                            <th>gf</th>
+                            <th>ga</th>
+                            <th>gd</th>
+                            <th>pts</th>
+                            <th>pts/mp</th>
+                            <th>attendance</th>
+                            <th>season</th>
+                            <th>xg</th>
+                            <th>xga</th>
+                            <th>xgd</th>
+                            <th>xgd/90</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>count</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>220.0</td><td>204.0</td><td>220.0</td><td>160.0</td><td>160.0</td><td>160.0</td><td>160.0</td></tr>
+                        <tr><td>mean</td><td>10.5</td><td>38.0</td><td>14.06</td><td>9.87</td><td>14.06</td><td>49.9</td><td>49.9</td><td>0.0</td><td>52.05</td><td>1.37</td><td>26453.1</td><td>2019.0</td><td>48.84</td><td>48.84</td><td>0.0</td><td>-0.0</td></tr>
+                        <tr><td>std</td><td>5.78</td><td>0.0</td><td>6.21</td><td>2.91</td><td>5.48</td><td>17.75</td><td>13.14</td><td>26.75</td><td>17.47</td><td>0.46</td><td>18088.53</td><td>3.17</td><td>11.62</td><td>8.62</td><td>17.13</td><td>0.45</td></tr>
+                        <tr><td>min</td><td>1.0</td><td>38.0</td><td>3.0</td><td>2.0</td><td>1.0</td><td>22.0</td><td>18.0</td><td>-64.0</td><td>16.0</td><td>0.42</td><td>91.0</td><td>2014.0</td><td>29.3</td><td>32.5</td><td>-33.0</td><td>-0.87</td></tr>
+                        <tr><td>25%</td><td>5.75</td><td>38.0</td><td>10.0</td><td>8.0</td><td>10.0</td><td>38.0</td><td>41.0</td><td>-17.0</td><td>41.0</td><td>1.08</td><td>13677.5</td><td>2016.0</td><td>40.58</td><td>42.88</td><td>-11.0</td><td>-0.29</td></tr>
+                        <tr><td>50%</td><td>10.5</td><td>38.0</td><td>13.0</td><td>10.0</td><td>15.0</td><td>46.0</td><td>50.0</td><td>-6.0</td><td>48.5</td><td>1.28</td><td>19957.0</td><td>2019.0</td><td>45.85</td><td>48.3</td><td>-3.15</td><td>-0.08</td></tr>
+                        <tr><td>75%</td><td>15.25</td><td>38.0</td><td>17.25</td><td>12.0</td><td>18.0</td><td>57.0</td><td>58.0</td><td>13.0</td><td>61.0</td><td>1.61</td><td>37320.5</td><td>2022.0</td><td>53.98</td><td>54.42</td><td>11.0</td><td>0.29</td></tr>
+                        <tr><td>max</td><td>20.0</td><td>38.0</td><td>30.0</td><td>18.0</td><td>30.0</td><td>118.0</td><td>94.0</td><td>89.0</td><td>95.0</td><td>2.5</td><td>83498.0</td><td>2024.0</td><td>91.5</td><td>76.2</td><td>49.5</td><td>1.3</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Key Findings (2024 Season Projections)</h2>
+            <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
+                <li>Based on our analysis, <strong class="text-blue-700">Barcelona has an 86.164% chance</strong> of being the champion of Spain.</li>
+                <li><strong class="text-blue-700">Real Madrid follows with a 13.836% chance</strong>.</li>
+                <li>The 7th position for the Conference League is most likely to be <strong class="text-green-700">Celta Vigo</strong> (based on Projected points).</li>
+                <li>The teams most likely to be relegated are <strong class="text-red-700">'Las Palmas' and 'Valladolid'</strong>.</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Championship Win Probabilities (2024 Season)</h2>
+            <div id="win-probability-chart" class="chart-container"></div>
+            <p class="text-gray-600 text-sm mt-4 text-center">
+                This bar chart visualizes the projected championship win probabilities for La Liga teams in the 2024 season, based on the provided analysis.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Top Finishes by Team and Rank (Last 10 Years)</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                This chart shows how many times each team finished in the top 3 ranks over the last 10 years.
+            </p>
+            <div id="top-finishes-chart" class="chart-container"></div>
+            <h3 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">Top 3 Ranking Counts</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th>Rank (rk)</th>
+                            <th>Squad</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Barcelona</td><td>6</td></tr>
+                        <tr><td>1</td><td>Real Madrid</td><td>4</td></tr>
+                        <tr><td>1</td><td>Atlético Madrid</td><td>1</td></tr>
+                        <tr><td>2</td><td>Real Madrid</td><td>5</td></tr>
+                        <tr><td>2</td><td>Barcelona</td><td>4</td></tr>
+                        <tr><td>2</td><td>Atlético Madrid</td><td>2</td></tr>
+                        <tr><td>3</td><td>Atlético Madrid</td><td>7</td></tr>
+                        <tr><td>3</td><td>Real Madrid</td><td>2</td></tr>
+                        <tr><td>3</td><td>Barcelona</td><td>1</td></tr>
+                        <tr><td>3</td><td>Girona</td><td>1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Historical Winning Teams Analysis</h2>
+            <p class="text-gray-700 leading-relaxed">
+                A look at the teams that finished 1st each season from 2014 to 2024, along with their points, points per match, and goal difference.
+            </p>
+            <pre class="mt-2"><code>     season            squad  pts  pts/mp  gd
+0      2014        Barcelona   94    2.47  89
+20     2015        Barcelona   91    2.39  83
+40     2016      Real Madrid   93    2.45  65
+60     2017        Barcelona   93    2.45  70
+80     2018        Barcelona   87    2.29  54
+100    2019      Real Madrid   87    2.29  45
+120    2020  Atlético Madrid   86    2.26  42
+140    2021      Real Madrid   86    2.26  49
+160    2022        Barcelona   88    2.32  50
+180    2023      Real Madrid   95    2.50  61
+200    2024        Barcelona   88    2.32  63
+</code></pre>
+            <p class="text-gray-700 mt-4">
+                The average points per match for past 10 winning teams (excluding this year) is: <strong class="text-blue-700">2.368</strong>.
+            </p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Data Privacy & Security Considerations</h2>
+            <p class="text-gray-700 leading-relaxed">
+                This webpage demonstrates the embedding of analytical insights. When integrating actual analytics tracking (like the placeholder in the `&lt;head&gt;` section), it is crucial to adhere to strict data privacy and security standards:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                <li><strong>User Consent:</strong> Always obtain explicit user consent (e.g., via a cookie consent banner) before collecting any non-essential data.</li>
+                <li><strong>Privacy Policy:</strong> Maintain a clear and comprehensive privacy policy detailing what data is collected, why, how it's used, and user rights.</li>
+                <li><strong>Data Minimization:</strong> Collect only necessary data and anonymize/pseudonymize it where possible.</li>
+                <li><strong>HTTPS:</strong> Ensure all data transmission is encrypted using HTTPS.</li>
+                <li><strong>Secure Platforms:</strong> Use analytics platforms with robust security measures and access controls.</li>
+                <li><strong>Regular Audits:</strong> Periodically review data collection practices and security to ensure compliance and identify vulnerabilities.</li>
+            </ul>
+        </section>
+
+        <footer class="text-center text-gray-500 text-sm mt-12 pt-8 border-t border-gray-200">
+            &copy; 2024 La Liga Analysis. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Vanta.js Globe Background
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x1e40af, // A blue color to match the theme
+            color2: 0x0,
+            size: 1.10,
+            backgroundColor: 0xf0f2f5 // Original light gray background
+        });
+
+        // Data for the Championship Win Probabilities chart (from the original notebook's df_test_sorted)
+        const winProbabilityData = [
+            { squad: 'Barcelona', win_probability_percent: 86.164 },
+            { squad: 'Real Madrid', win_probability_percent: 13.836 },
+        ];
+
+        // Sort data by win_probability_percent in descending order for the chart
+        winProbabilityData.sort((a, b) => b.win_probability_percent - a.win_probability_percent);
+
+        // Plotly chart data and layout for Championship Win Probabilities
+        const winProbabilitiesChartData = [{
+            x: winProbabilityData.map(d => d.squad),
+            y: winProbabilityData.map(d => d.win_probability_percent),
+            type: 'bar',
+            marker: {
+                color: ['#1f77b4', '#ff7f0e'] // Example colors for Barcelona and Real Madrid
+            },
+            hovertemplate: '<b>%{x}</b><br>Win Probability: %{y:.3f}%<extra></extra>',
+        }];
+
+        const winProbabilitiesChartLayout = {
+            title: {
+                text: 'Championship Win Probabilities (2024 Season)',
+                font: { size: 24, color: '#333' }
+            },
+            xaxis: {
+                title: { text: 'Team', font: { size: 18, color: '#555' } },
+                tickfont: { size: 14 }
+            },
+            yaxis: {
+                title: { text: 'Win Probability (%)', font: { size: 18, color: '#555' } },
+                range: [0, 100],
+                tickfont: { size: 14 }
+            },
+            margin: { l: 60, r: 60, b: 80, t: 80, pad: 4 },
+            plot_bgcolor: '#f8fafc',
+            paper_bgcolor: '#ffffff',
+            font: { family: 'Inter, sans-serif' },
+            hovermode: 'closest',
+            responsive: true
+        };
+
+        Plotly.newPlot('win-probability-chart', winProbabilitiesChartData, winProbabilitiesChartLayout, {responsive: true});
+
+        // Data for the Top Finishes by Team and Rank (Last 10 Years) chart
+        const topFinishesData = [
+            { rk: 1, squad: 'Barcelona', count: 6 },
+            { rk: 1, squad: 'Real Madrid', count: 4 },
+            { rk: 1, squad: 'Atlético Madrid', count: 1 },
+            { rk: 2, squad: 'Real Madrid', count: 5 },
+            { rk: 2, squad: 'Barcelona', count: 4 },
+            { rk: 2, squad: 'Atlético Madrid', count: 2 },
+            { rk: 3, squad: 'Atlético Madrid', count: 7 },
+            { rk: 3, squad: 'Real Madrid', count: 2 },
+            { rk: 3, squad: 'Barcelona', count: 1 },
+            { rk: 3, squad: 'Girona', count: 1 }
+        ];
+
+        topFinishesData.sort((a, b) => {
+            if (a.squad === b.squad) {
+                return a.rk - b.rk;
+            }
+            const squadOrder = ['Atlético Madrid', 'Barcelona', 'Real Madrid', 'Girona'];
+            return squadOrder.indexOf(a.squad) - squadOrder.indexOf(b.squad);
+        });
+
+        const topFinishesChartData = [{
+            x: topFinishesData.map(d => d.squad),
+            y: topFinishesData.map(d => d.count),
+            type: 'bar',
+            marker: {
+                color: topFinishesData.map(d => d.rk),
+                colorscale: 'Viridis',
+                colorbar: { title: 'Rank' }
+            },
+            hovertemplate: '<b>Team: %{x}</b><br>Finish Count: %{y}<br>Rank: %{marker.color}<extra></extra>',
+        }];
+
+        const topFinishesChartLayout = {
+            title: {
+                text: 'Top Finishes by Team and Rank (Last 10 Years)',
+                font: { size: 24, color: '#333' }
+            },
+            xaxis: {
+                title: { text: 'Team', font: { size: 18, color: '#555' } },
+                tickfont: { size: 14 },
+                categoryorder: 'total descending'
+            },
+            yaxis: {
+                title: { text: 'Finish Count', font: { size: 18, color: '#555' } },
+                tickfont: { size: 14 }
+            },
+            margin: { l: 60, r: 60, b: 80, t: 80, pad: 4 },
+            plot_bgcolor: '#f8fafc',
+            paper_bgcolor: '#ffffff',
+            font: { family: 'Inter, sans-serif' },
+            hovermode: 'closest',
+            responsive: true
+        };
+
+        Plotly.newPlot('top-finishes-chart', topFinishesChartData, topFinishesChartLayout, {responsive: true});
+    </script>
+</body>
+</html>

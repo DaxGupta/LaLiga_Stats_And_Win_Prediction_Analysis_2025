@@ -1,0 +1,71 @@
+body {
+    font-family: 'Inter', sans-serif;
+    /* The background color is now handled by Vanta.js */
+}
+#vanta-bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.container {
+    max-width: 1024px; /* Slightly wider for more content */
+}
+/* Custom styles for Plotly chart containers */
+.chart-container {
+    width: 100%;
+    height: 500px; /* Adjust height as needed */
+    margin: 20px auto;
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    background-color: white;
+    padding: 1rem; /* Add some padding inside the chart container */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 0.5rem;
+    overflow: hidden; /* Ensures rounded corners apply to content */
+}
+th, td {
+    border: 1px solid #e2e8f0; /* Tailwind gray-200 */
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+th {
+    background-color: #edf2f7; /* Tailwind gray-100 */
+    font-weight: 600;
+    color: #2d3748; /* Tailwind gray-800 */
+}
+tbody tr:nth-child(odd) {
+    background-color: #f7fafc; /* Tailwind gray-50 */
+}
+tbody tr:hover {
+    background-color: #ebf4ff; /* Tailwind blue-50 */
+}
+pre {
+    background-color: #2d3748; /* Dark background for code snippets */
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto; /* Enable horizontal scrolling for wide code */
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.key-finding {
+            background-color: rgba(159, 237, 236, 0.1);
+            padding: 0.75rem 1.25rem;
+            border-left: 5px solid;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+        }
+        .key-finding.champion { border-color: #000000; } /* Gold */
+        .key-finding.runner-up { border-color: #004996; } /* Silver */
+        .key-finding.conference { border-color: #8ac3ee; } /* Bronze */
+        .key-finding.relegation { border-color: #921b88; } /* Red */
