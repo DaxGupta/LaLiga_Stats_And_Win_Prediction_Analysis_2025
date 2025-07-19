@@ -17,10 +17,9 @@ Link to the page: https://laligastats2025-dw48h.sevalla.page/
 - [Technologies Used](#technologies-used)
 - [Setup and Installation](#setup-and-installation)
   - [Prerequisites](#prerequisites)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
+  - [Installation](#installation)
+  - [Running the Analysis](#running-the-analysis)
 - [Usage](#usage)
-- [Machine Learning Model](#machine-learning-model)
 - [Future Enhancements](#future-enhancements)
 - [Contribution](#contribution)
 - [License](#license)
@@ -85,8 +84,6 @@ The project includes a website to visualize the data analysis.
     -   CSS
     -   JavaScript
 
-> *Specify any additional libraries, frameworks, or tools used.*
-
 ## Setup and Installation🛠
 
 ### Prerequisites
@@ -117,27 +114,27 @@ The project includes a website to visualize the data analysis.
     * Open `index.html` (or `Separate/index.html` if you prefer that version) in your web browser.
     * The page will display interactive charts and analysis based on the data. The `script.js` and `style.css` files in the `Separate/` directory are used for the visual presentation and interactivity.
 
-## Usage 🚀
+## Usage🚀
 1.  Run the `La_Liga_Data_Analysis.ipynb` Jupyter Notebook to explore the data and analysis.
 2.  Open the `index.html` file in your browser to view the interactive visualizations.
 
 > *Provide specific examples of how to use the project, including code snippets or commands.*
 
-## Future Enhancements 
+## Future Enhancements🔬
 -   Implement a machine learning model for win prediction.
 -   Add more interactive visualizations to the website.
 -   Include data from additional seasons.
 -   Improve the data scraping process.
 
-## Contribution 🤝
+## Contribution🤝
 Contributions are welcome! Please follow these steps:
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
 3.  Make your changes and commit them with descriptive messages.
 4.  Submit a pull request.
 
-## License 📜
+## License📜
 This project is licensed under the MIT License, GPL, and AFL. See the `LICENSE` file for details.
 
-## Contact 📧
+## Contact📧
 > Daksh Gupta - [dakshg508@gmail.com](mailto:dakshg508@gmail.com)
